@@ -18,21 +18,13 @@ module.exports = {
         loader: 'babel'
       },
       {
-        test: /\.css/,
-        loader: ExtractTextPlugin.extract("style", "css")
-      },
-      {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract("style", 'css', "less")
+        loader: 'style!css!less'
       }
     ]
   },
-  resolve: {
-    modules: ['node_modules', 'app'],
-  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin("bundle.css")
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     contentBase: './build',
