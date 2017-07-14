@@ -1,4 +1,7 @@
 var webpack = require('webpack');
+
+var path = require("path");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
   devtool: 'eval-source-map',
   entry: ['webpack/hot/dev-server', __dirname + '/app/app.js'],
@@ -15,13 +18,21 @@ module.exports = {
         loader: 'babel'
       },
       {
+        test: /\.css/,
+        loader: ExtractTextPlugin.extract("style", "css")
+      },
+      {
         test: /\.less$/,
-        loader: 'style!css!less'
+        loader: ExtractTextPlugin.extract("style", 'css', "less")
       }
     ]
   },
+  resolve: {
+    modules: ['node_modules', 'app'],
+  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin("bundle.css")
   ],
   devServer: {
     contentBase: './build',
