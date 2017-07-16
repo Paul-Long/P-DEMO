@@ -57,3 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
+.idea/
+build/bundle.js
+build/main.css
+package-lock.json
