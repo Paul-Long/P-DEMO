@@ -2,6 +2,7 @@ var webpack = require('webpack');
 
 var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
   devtool: 'eval-source-map',
   entry: ['webpack/hot/dev-server', __dirname + '/app/app.js'],
@@ -19,11 +20,15 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loader: 'style!css!less'
+        loader: ExtractTextPlugin.extract("style", "css!postcss!less")
       }
     ]
   },
+  postcss: [
+    require('autoprefixer')    //调用autoprefixer插件,css3自动补全
+  ],
   plugins: [
+    new ExtractTextPlugin('main.css'),
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
