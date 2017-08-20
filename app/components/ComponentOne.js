@@ -5,7 +5,7 @@ import '../app.less';
 class ComponentOne extends React.Component {
   render() {
     return (
-      <div>
+      <div className='h-app-content'>
         <Button type='primary'>Hello World!</Button>
       </div>
     )
