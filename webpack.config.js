@@ -9,10 +9,13 @@ var happyThreadPool = HappyPack.ThreadPool({size: 5});
 
 module.exports = {
   devtool: 'eval-source-map',
-  entry: ['webpack/hot/dev-server', __dirname + '/app/app.js'],
+  entry: {
+    main: __dirname + '/app/app.js',
+    vendor: ['react', 'react-dom', 'react-router-dom']
+  },
   output: {
     path: __dirname + '/build',
-    filename: '[name].[hash:7].js'
+    filename: '[name].[hash:8].js'
   },
   module: {
     rules: [
@@ -45,17 +48,19 @@ module.exports = {
       loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'build/index.html'
+      filename: 'index.[hash:8].html',
+      template: './index.html'
     }),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common', // 注意不要.js后缀
-      chunks: ['main']
-    })
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: true,
+      compress: {warnings: false},
+      output: {comments: false}
+    }),
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[hash:8].js', minChunks: Infinity})
   ],
   devServer: {
     contentBase: './build',
+    hot: true,
     colors: true,
     historyApiFallback: true,
     inline: true,
