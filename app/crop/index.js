@@ -6,6 +6,18 @@ import './style.less';
 const {Component} = React;
 
 class Crop extends Component {
+  constructor(props) {
+    super(props);
+    this.size = 500;
+    this.state = {
+      url: undefined
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.url !== this.state.url;
+  }
+
   readBlobAsDataURL = (blob, callback) => {
     const a = new FileReader();
     a.onload = function (e) {
@@ -40,18 +52,6 @@ class Crop extends Component {
   onReset = () => {
     this.cropper.reset();
   };
-
-  constructor(props) {
-    super(props);
-    this.size = 500;
-    this.state = {
-      url: undefined
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.url !== this.state.url;
-  }
 
   render() {
     const {url} = this.state;
