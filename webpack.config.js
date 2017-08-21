@@ -22,7 +22,7 @@ module.exports = {
         loaders: ['happypack/loader?id=js']
       },
       {
-        test: /\.less$/,
+        test: /\.(css|less)$/,
         loader: ExtractTextPlugin.extract("style", "css!postcss!less")
       }
     ]
@@ -37,6 +37,11 @@ module.exports = {
       id: 'js',
       threadPool: happyThreadPool,
       loaders: ['babel?{"presets":["es2015","stage-0","react"],"plugins":[["import",{"libraryName":"antd","style":true}]]}'],
+    }),
+    new HappyPack({
+      id: 'styles',
+      threadPool: happyThreadPool,
+      loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
     })
   ],
   devServer: {

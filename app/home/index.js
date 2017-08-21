@@ -1,8 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
-import '../app.less';
 
-class ComponentOne extends React.Component {
+class Home extends React.Component {
   render() {
     return (
       <div className='h-app-content'>
@@ -11,4 +10,5 @@ class ComponentOne extends React.Component {
     )
   }
 }
-export default ComponentOne;
+
+export default Home;
