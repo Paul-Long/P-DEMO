@@ -3,20 +3,25 @@ import ReactDom from 'react-dom';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import Home from './home';
 import Crop from './crop';
+import TableDemo from './table';
 import './styles/style.less';
 
+const menus = [
+  {path: 'HOME', component: Home},
+  {path: 'CROP', component: Crop},
+  {path: 'TABLE', component: TableDemo},
+];
 const App = () => (
   <Router>
     <div className='h-app'>
       <ul className='h-app-header' style={{borderBottom: '1px solid #ddd', display: 'flex', flexDirection: 'row'}}>
-        <li style={{marginLeft: '10px'}}><Link to='/'>HOME</Link></li>
-        <li style={{marginLeft: '10px'}}><Link to='/crop'>CROP</Link></li>
+        {menus.map(m => (<li key={m.path} style={{marginLeft: '10px'}}><Link to={`/${m.path}`}>{m.path}</Link></li>))}
       </ul>
-      <Route exact path='/' component={Home} />
-      <Route path='/crop' component={Crop} />
+      {menus.map(m => (<Route key={m.path} path={`/${m.path}`} component={m.component} />))}
     </div>
   </Router>
 );
 
-
 ReactDom.render((<App />), document.getElementById('app'));
+
+
