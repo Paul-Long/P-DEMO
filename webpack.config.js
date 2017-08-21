@@ -8,7 +8,7 @@ var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({size: 5});
 
 module.exports = {
-  devtool: 'eval-source-map',
+  // devtool: 'eval-source-map',
   entry: {
     main: __dirname + '/app/app.js',
     vendor: ['react', 'react-dom', 'react-router-dom']
@@ -48,7 +48,7 @@ module.exports = {
       loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.[hash:8].html',
+      filename: 'index.html',
       template: './index.html'
     }),
     new webpack.optimize.UglifyJsPlugin({
