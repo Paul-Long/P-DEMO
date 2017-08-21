@@ -56,7 +56,13 @@ module.exports = {
       compress: {warnings: false},
       output: {comments: false}
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[hash:8].js', minChunks: Infinity})
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[hash:8].js', minChunks: Infinity}),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin,
   ],
   devServer: {
     contentBase: './build',
