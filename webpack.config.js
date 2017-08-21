@@ -3,6 +3,9 @@ var webpack = require('webpack');
 var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+var HappyPack = require('happypack');
+var happyThreadPool = HappyPack.ThreadPool({size: 5});
+
 module.exports = {
   devtool: 'eval-source-map',
   entry: ['webpack/hot/dev-server', __dirname + '/app/app.js'],
@@ -16,7 +19,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel?presets[]=react,presets[]=es2015,presets[]=stage-0'
+        loaders: ['happypack/loader?id=js']
       },
       {
         test: /\.less$/,
@@ -29,7 +32,12 @@ module.exports = {
   ],
   plugins: [
     new ExtractTextPlugin('main.css'),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new HappyPack({
+      id: 'js',
+      threadPool: happyThreadPool,
+      loaders: ['babel?{"presets":["es2015","stage-0","react"],"plugins":[["import",{"libraryName":"antd","style":true}]]}'],
+    })
   ],
   devServer: {
     contentBase: './build',

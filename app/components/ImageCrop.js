@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Button, Icon} from 'antd';
+import {Button, Icon, Upload} from 'antd';
 
 class ImageCrop extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class ImageCrop extends React.Component {
   render() {
     const {url} = this.state;
     return (
-      <div>
+      <div className='h-app-content'>
         <Upload
           beforeUpload={this.onBefore}
         >
