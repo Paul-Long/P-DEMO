@@ -55,6 +55,7 @@ class Crop extends Component {
 
   render() {
     const {url} = this.state;
+    const imageSize = (this.size / 2) - 20;
     return (
       <div className='h-app-content h-crop'>
         <Upload
@@ -62,46 +63,54 @@ class Crop extends Component {
         >
           <Button><Icon type='upload' />上传</Button>
         </Upload>
-        {url ?
-          <Cropper
-            ref={r => this.cropper = r}
-            src={url}
-            style={{height: this.size, width: this.size}}
-            aspectRatio={1}
-            guides={false}
-            crop={this.onCrop}
-            ready={this.onReady}
-            // viewMode={3}
-            // dragMode='move'
-            // autoCropArea={1}
-            // restore={false}
-            // modal={false}
-            // highlight={false}
-            // cropBoxMovable={false}
-            // cropBoxResizable={false}
-          /> : ''}
-        <div style={{width: this.size}}>
-          <Button onClick={() => this.onZoom(0.1)}><Icon type='plus-circle-o' /></Button>
-          <Button onClick={() => this.onZoom(-0.1)}><Icon type='minus-circle-o' /></Button>
-          <Button onClick={this.onReset}><Icon type='reload' /></Button>
+        <div style={{width: this.size, height: this.size, border: '1px solid #dddddd', marginTop: '20px'}}>
+          {url ?
+            <Cropper
+              ref={r => this.cropper = r}
+              src={url}
+              style={{height: '100%', width: '100%'}}
+              aspectRatio={1}
+              guides={false}
+              crop={this.onCrop}
+              ready={this.onReady}
+              viewMode={3}
+              dragMode='move'
+              autoCropArea={1}
+              restore={false}
+              modal={false}
+              highlight={false}
+              cropBoxMovable={false}
+              cropBoxResizable={false}
+            /> : ''}
+        </div>
+        <div style={{width: this.size, marginTop: '5px', textAlign: 'right'}}>
+          <Button style={{marginRight: '5px'}} onClick={() => this.onZoom(0.1)}><Icon type='plus-circle-o' /></Button>
+          <Button style={{marginRight: '5px'}} onClick={() => this.onZoom(-0.1)}><Icon type='minus-circle-o' /></Button>
+          <Button style={{marginRight: '5px'}} onClick={this.onReset}><Icon type='reload' /></Button>
         </div>
         <div style={{width: this.size}}>
           <div className='box' style={{float: 'left'}}>
-            <h1>1:1</h1>
-            <div style={{width: (this.size / 2) - 20, height: (this.size / 2) - 20, border: '1px solid #dddddd'}}>
-              <img ref={r => this.image1 = r} alt='图片预览' style={{width: '100%', height: '100%'}} />
-            </div>
-          </div>
-          <div className='box' style={{float: 'left'}}>
-            <h1>5:4</h1>
+            <h3>菜品详情效果(5:4)</h3>
             <div className='img-preview' style={{
-              width: (this.size / 2) - 20,
+              width: imageSize,
               float: 'left',
-              height: 4 * ((this.size / 2) - 20) / 5,
+              height: 4 * (imageSize) / 5,
               border: '1px solid #dddddd'
             }}>
               <img ref={r => this.image54 = r} alt='图片预览'
-                   style={{width: '100%', marginTop: `-${((this.size / 2) - 20) / 10}px`}} />
+                   style={{width: '100%', marginTop: `-${(imageSize) / 10}px`}} />
+            </div>
+          </div>
+          <div className='box' style={{
+            float: 'left',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}>
+            <h3>菜品列表效果(1:1)</h3>
+            <div style={{width: imageSize * 3 / 5, height: imageSize * 3 / 5, border: '1px solid #dddddd'}}>
+              <img ref={r => this.image1 = r} alt='图片预览' style={{width: '100%', height: '100%'}} />
             </div>
           </div>
         </div>

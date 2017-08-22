@@ -35,7 +35,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('[name].[contenthash:8].css'),
+    new ExtractTextPlugin('[name].[contenthash:8].css', {allChunks: true}),
     new webpack.HotModuleReplacementPlugin(),
     new HappyPack({
       id: 'js',
@@ -74,7 +74,6 @@ module.exports = {
     historyApiFallback: true,
     inline: true,
     port: 9090,
-    open: true,
     openPage: 'home'
   }
 };

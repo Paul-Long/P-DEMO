@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from '../components';
+import {Table} from '../../components/index';
 
 const {Component} = React;
 
@@ -18,7 +18,6 @@ class TableDemo extends Component {
 }
 
 export default TableDemo;
-
 const columns = [
   {key: 'a', title: '有一格', width: 150},
   {key: 'b', title: '有二格', width: 150},
