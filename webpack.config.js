@@ -6,6 +6,8 @@ var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({size: 5});
+var WebpackMd5Hash = require('webpack-md5-hash');
+var AssetsPlugin = require('assets-webpack-plugin');
 
 module.exports = {
   // devtool: 'eval-source-map',
@@ -15,7 +17,7 @@ module.exports = {
   },
   output: {
     path: __dirname + '/build',
-    filename: '[name].[hash:8].js'
+    filename: '[name].[chunkhash:8].[id].js'
   },
   module: {
     rules: [
@@ -35,7 +37,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('[name].[contenthash].css'),
+    new ExtractTextPlugin('[name].[contenthash:8].css'),
     new webpack.HotModuleReplacementPlugin(),
     new HappyPack({
       id: 'js',
@@ -56,13 +58,18 @@ module.exports = {
       compress: {warnings: false},
       output: {comments: false}
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[hash:8].js', minChunks: Infinity}),
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[hash:8].[id].js', minChunks: Infinity}),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      filename: 'manifest.[hash:8].[id].js',
+      minChunks: Infinity
+    }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     new webpack.optimize.OccurrenceOrderPlugin,
+    new WebpackMd5Hash(),
+    new AssetsPlugin({filename: __dirname + '/build/source-map.json', prettyPrint: true}),
   ],
   devServer: {
     contentBase: './build',
@@ -71,6 +78,8 @@ module.exports = {
     historyApiFallback: true,
     inline: true,
     port: 9090,
-    process: true
+    process: true,
+    open: true,
+    openPage: '/home'
   }
 };
