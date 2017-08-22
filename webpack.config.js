@@ -75,6 +75,6 @@ module.exports = {
     inline: true,
     port: 9090,
     open: true,
-    openPage: '/home'
+    openPage: 'home'
   }
 };
