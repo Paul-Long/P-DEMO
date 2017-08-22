@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
@@ -57,7 +56,7 @@ module.exports = {
       compress: {warnings: false},
       output: {comments: false}
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[hash:8].[id].js', minChunks: Infinity}),
+    new webpack.optimize.CommonsChunkPlugin({name: 'common', chunks: ['main', 'vendor']}),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       filename: 'manifest.[hash:8].[id].js',
