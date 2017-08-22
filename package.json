@@ -1,18 +1,17 @@
 {
-  "name": "webpack-demo",
+  "name": "P-DEMO",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "rm -rf ./build/* && webpack",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server --color"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "assets-webpack-plugin": "^3.5.1",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
@@ -44,7 +43,7 @@
     "sortablejs": "^1.6.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^1.16.5",
+    "webpack-dev-server": "^2.7.1",
     "webpack-md5-hash": "0.0.5"
   },
   "dependencies": {

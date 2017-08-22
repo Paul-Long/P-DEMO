@@ -7,7 +7,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({size: 5});
 var WebpackMd5Hash = require('webpack-md5-hash');
-var AssetsPlugin = require('assets-webpack-plugin');
 
 module.exports = {
   // devtool: 'eval-source-map',
@@ -65,20 +64,17 @@ module.exports = {
       minChunks: Infinity
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.OccurrenceOrderPlugin,
     new WebpackMd5Hash(),
-    new AssetsPlugin({filename: __dirname + '/build/source-map.json', prettyPrint: true}),
   ],
   devServer: {
     contentBase: './build',
     hot: true,
-    colors: true,
     historyApiFallback: true,
     inline: true,
     port: 9090,
-    process: true,
     open: true,
     openPage: '/home'
   }
