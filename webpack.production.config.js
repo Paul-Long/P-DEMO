@@ -14,7 +14,7 @@ module.exports = {
     vendor: ['react', 'react-dom', 'react-router-dom']
   },
   output: {
-    path: __dirname + '/build',
+    path: __dirname + '/dist',
     filename: '[name].[chunkhash:8].[id].js'
   },
   module: {
@@ -36,7 +36,6 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('[name].[contenthash:8].css', {allChunks: true}),
-    new webpack.HotModuleReplacementPlugin(),
     new HappyPack({
       id: 'js',
       threadPool: happyThreadPool,
@@ -56,24 +55,20 @@ module.exports = {
       compress: {warnings: false},
       output: {comments: false}
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'common', chunks: ['main', 'vendor']}),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      filename: 'common.[chunkhash:8].[id].js',
+      chunks: ['main', 'vendor']
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
-      filename: 'manifest.[hash:8].[id].js',
+      filename: 'manifest.[chunkhash:8].[id].js',
       minChunks: Infinity
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.OccurrenceOrderPlugin,
     new WebpackMd5Hash(),
-  ],
-  devServer: {
-    contentBase: './build',
-    hot: true,
-    historyApiFallback: true,
-    inline: true,
-    port: 9090,
-    openPage: 'home'
-  }
+  ]
 };

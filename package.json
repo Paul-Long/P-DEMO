@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "rm -rf ./build/* && webpack",
-    "dev": "webpack-dev-server --color"
+    "dev": "webpack-dev-server --color",
+    "build": "NODE_ENV=production webpack --config ./webpack.production.config.js -p --display-modules --display-chunks --progress --color"
   },
   "keywords": [],
   "author": "",
