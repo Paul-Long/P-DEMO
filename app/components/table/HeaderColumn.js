@@ -14,6 +14,12 @@ class HeaderColumn extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.checkAll !== this.props.checkAll) {
+      this.setState({checked: nextProps.checkAll});
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.colData !== this.props.colData
       || nextState.checked !== this.state.checked;
@@ -25,6 +31,7 @@ class HeaderColumn extends Component {
       onDown(indexKey);
     }
   };
+
   handleChange = () => {
     const {onCheckAll} = this.props;
     const {checked} = this.state;
@@ -33,6 +40,7 @@ class HeaderColumn extends Component {
       onCheckAll(!checked)
     }
   };
+
   renderTh = (colData = {}, isTopOne = true, isLeftOne = true) => {
     const {headerResizeEnable} = this.props;
     const style = {
@@ -79,12 +87,6 @@ class HeaderColumn extends Component {
     }
     return ele;
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.checkAll !== this.props.checkAll) {
-      this.setState({checked: nextProps.checkAll});
-    }
-  }
 
   render() {
     const {className = '', colData} = this.props;

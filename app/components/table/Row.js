@@ -47,6 +47,7 @@ class Row extends Component {
               tdSpace={tdSpace}
               render={render}
               style={style}
+              index={this.props.currentIndex}
             />);
         }
       }

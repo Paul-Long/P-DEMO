@@ -12,9 +12,9 @@ class Column extends Component {
   }
 
   renderChildren = () => {
-    const {render, data, columnKey} = this.props;
+    const {render, data, columnKey, index} = this.props;
     if (typeof render === 'function') {
-      return render(data);
+      return render(data, index);
     }
     if (columnKey === TABLE_SPACE_TD) {
       return '';
@@ -66,5 +66,6 @@ Column.propTypes = {
   height: PropTypes.number,
   tdSpace: PropTypes.oneOf(['left', 'center', 'right']),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  style: PropTypes.object
+  style: PropTypes.object,
+  index: PropTypes.number
 };

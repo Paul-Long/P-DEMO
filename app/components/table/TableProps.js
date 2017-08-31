@@ -9,7 +9,7 @@ export default class TableProps extends Component {
 
   static propTypes = {
     className: PropTypes.string,
-    rowKey: PropTypes.string,
+    rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     data: PropTypes.array,
     columns: PropTypes.array,
     style: PropTypes.object,

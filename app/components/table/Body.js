@@ -20,6 +20,12 @@ class Body extends Component {
     this.sortAble(this.props.sortEnable);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.sortEnable !== this.props.sortEnable) {
+      this.sortAble(nextProps.sortEnable);
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.width !== this.props.width) {
       return true;
@@ -35,9 +41,6 @@ class Body extends Component {
       || nextProps.columns !== this.props.columns;
   }
 
-  static defaultProps = {
-    rowKey: 'id'
-  };
   sortAble = (sortEnable) => {
     if (this.sort) {
       this.sort.destroy();
@@ -57,21 +60,25 @@ class Body extends Component {
       });
     }
   };
+
   reCalcHeight = (prop) => {
     console.log(` reCalc height ${prop.key} : ${prop.value}`);
   };
+
   onSelect = (value, checked) => {
     const {onSelect} = this.props;
     if (typeof onSelect === 'function') {
       onSelect(value, checked);
     }
   };
+
   onClick = (value) => {
     const {onClick} = this.props;
     if (typeof onClick === 'function') {
       onClick(value);
     }
   };
+
   onMouseOver = (key) => {
     const {onMouseOver} = this.props;
     if (typeof onMouseOver === 'function') {
@@ -84,12 +91,20 @@ class Body extends Component {
       onMouseOut(key);
     }
   };
+
   renderTrs = () => {
     const {rowKey, fixed, rowHeight, selectMulti, selectValues = [], hoverRow, clickRow, getRowCount} = this.props;
     const columns = this.props.columns || [];
     const data = this.props.data || [];
     return data.map((d, i) => {
-      const k = getKeyData(rowKey.split('.'), d);
+      let k;
+      if (typeof rowKey === 'function') {
+        k = rowKey(d);
+      } else if (typeof rowKey === 'string') {
+        k = getKeyData(rowKey.split('.'), d);
+      } else {
+        k = '' + i;
+      }
       let row = 1;
       if (typeof getRowCount === 'function') {
         row = getRowCount(d, i);
@@ -116,12 +131,6 @@ class Body extends Component {
       )
     })
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.sortEnable !== this.props.sortEnable) {
-      this.sortAble(nextProps.sortEnable);
-    }
-  }
 
   render() {
     const {fixedHeader, width, sortEnable} = this.props;
@@ -150,7 +159,7 @@ export default Body;
 Body.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array,
-  rowKey: PropTypes.string,
+  rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   columns: PropTypes.array,
   rowHeight: PropTypes.number,
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

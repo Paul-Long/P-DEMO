@@ -30,6 +30,19 @@ class Table extends TableProps {
     this.setState({paginationHeight});
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.columns !== this.props.columns) {
+      this.columns = nextProps.columns || [];
+      this.initColumns(this.props);
+    }
+    if (nextProps.pagination !== this.state.pagination) {
+      const pagination = nextProps.pagination || {};
+      const total = pagination.total || 0;
+      const paginationHeight = this.props.isScroll || total === 0 ? 0 : TableConfig.PAGINATION_HEIGHT;
+      this.setState({paginationHeight});
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextState.hScroll !== this.state.hScroll
       || nextState.vScroll !== this.state.vScroll
@@ -66,6 +79,7 @@ class Table extends TableProps {
       }
     });
   };
+
   onRefresh = () => {
     const {pagination = {}, isScroll} = this.props;
     if (!isScroll) return;
@@ -74,12 +88,15 @@ class Table extends TableProps {
       onChange(current + 1, pageSize);
     }
   };
+
   onWheel = (size) => {
     this.scrollY.setTop(size);
   };
+
   onResize = (scroll) => {
     this.setState(scroll);
   };
+
   renderPagination = () => {
     const {isPage, isScroll, pagination = {}} = this.props;
     if (!isPage) return '';
@@ -99,13 +116,6 @@ class Table extends TableProps {
       />
     )
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.columns !== this.props.columns) {
-      this.columns = nextProps.columns || [];
-      this.initColumns(this.props);
-    }
-  }
 
   render() {
     let {className, ...props} = this.props;
@@ -154,6 +164,5 @@ Table.defaultProps = {
   pagination: TableConfig.PAGINATION_OPTION,
   isScroll: TableConfig.PAGINATION_SCROLL,
   sortEnable: TableConfig.SORT_ENABLE,
-  rowKey: 'id',
   headerResizeEnable: TableConfig.HEADER_RESIZE_ENABLE
 };
