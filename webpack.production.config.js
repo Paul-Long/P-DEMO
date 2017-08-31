@@ -1,21 +1,24 @@
-var webpack = require('webpack');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var HappyPack = require('happypack');
-var happyThreadPool = HappyPack.ThreadPool({size: 5});
-var WebpackMd5Hash = require('webpack-md5-hash');
+const webpack = require('webpack');
+const path = require('path');
+const os = require('os');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
+const WebpackMd5Hash = require('webpack-md5-hash');
+const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {
-  // devtool: 'eval-source-map',
   entry: {
-    main: __dirname + '/app/app.js',
+    main: path.join(__dirname, '/app/app.js'),
     vendor: ['react', 'react-dom', 'react-router-dom']
   },
   output: {
-    path: __dirname + '/dist',
-    filename: '[name].[chunkhash:8].[id].js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[chunkhash:8].[id].js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -35,11 +38,12 @@ module.exports = {
     ]
   },
   plugins: [
+    new CaseSensitivePathsPlugin(),
     new ExtractTextPlugin('[name].[contenthash:8].css', {allChunks: true}),
     new HappyPack({
       id: 'js',
       threadPool: happyThreadPool,
-      loaders: ['babel-loader?{"presets":["es2015","stage-0","react"],"plugins":[["import",{"libraryName":"antd","style":true}]]}'],
+      loaders: ['babel-loader'],
     }),
     new HappyPack({
       id: 'styles',
@@ -48,12 +52,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './index.html'
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: true,
-      compress: {warnings: false},
-      output: {comments: false}
+      template: path.resolve(__dirname, 'index.html')
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
@@ -70,5 +69,14 @@ module.exports = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin,
     new WebpackMd5Hash(),
+    new UglifyJsParallelPlugin({
+      workers: os.cpus().length,
+      mangle: true,
+      compressor: {
+        warnings: false,
+        drop_console: true,
+        drop_debugger: true
+      }
+    })
   ]
 };

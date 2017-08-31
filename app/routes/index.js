@@ -1,27 +1,35 @@
 import React from 'react';
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom';
 import Bundle from './bundle';
+import '../styles/style.less';
 
 class Routes extends React.Component {
+  renderComponent = (props, component) => {
+    return (
+      <Bundle load={() => import(`../containers/${component}/index.js`)}>
+        {(COM) => <COM {...props} />}
+      </Bundle>
+    )
+  };
+
   render() {
     return (
       <Router>
         <div className='h-app'>
-          <ul className='h-app-header' style={{borderBottom: '1px solid #ddd', display: 'flex', flexDirection: 'row'}}>
+          <ul className='h-app-header'>
             {menus.map(m => (
-              <li key={m.path} style={{marginLeft: '10px'}}><Link to={`/${m.path}`}>{m.path}</Link></li>))}
+              <li key={m.path}>
+                <Link to={`/${m.path}`}>{m.path}</Link>
+              </li>))}
           </ul>
+          <Redirect from='/' to='HOME' />
           {menus.map(m => {
             return (
-              <Route
-                key={m.path}
-                exact={!!m.exact}
-                path={`/${m.path}`}
-                component={(props) => (
-                  <Bundle load={() => import(`../containers/${m.component}/index.js`)}>
-                    {(COM) => <COM {...props} />}
-                  </Bundle>
-                )} />)
+              <Route key={m.path}
+                     exact={!!m.exact}
+                     path={`/${m.path}`}
+                     component={(props) => this.renderComponent(props, m.component)}
+              />)
           })}
         </div>
       </Router>

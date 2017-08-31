@@ -61,3 +61,5 @@ typings/
 build/bundle.js
 build/main.css
 package-lock.json
+build
+dist

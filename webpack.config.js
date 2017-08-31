@@ -1,21 +1,24 @@
-var webpack = require('webpack');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var HappyPack = require('happypack');
-var happyThreadPool = HappyPack.ThreadPool({size: 5});
-var WebpackMd5Hash = require('webpack-md5-hash');
+const webpack = require('webpack');
+const path = require('path');
+const os = require('os');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HappyPack = require('happypack');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {
   // devtool: 'eval-source-map',
   entry: {
-    main: __dirname + '/app/app.js',
+    main: ['webpack-hot-middleware/client?reload=true', path.join(__dirname, '/app/app.js')],
     vendor: ['react', 'react-dom', 'react-router-dom']
   },
   output: {
-    path: __dirname + '/build',
-    filename: '[name].[chunkhash:8].[id].js'
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].[chunkhash:8].[id].js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -35,21 +38,24 @@ module.exports = {
     ]
   },
   plugins: [
+    new CaseSensitivePathsPlugin(),
     new ExtractTextPlugin('[name].[contenthash:8].css', {allChunks: true}),
     new webpack.HotModuleReplacementPlugin(),
     new HappyPack({
       id: 'js',
       threadPool: happyThreadPool,
       loaders: ['babel-loader?{"presets":["es2015","stage-0","react"],"plugins":[["import",{"libraryName":"antd","style":true}]]}'],
+      cache: true
     }),
     new HappyPack({
       id: 'styles',
       threadPool: happyThreadPool,
-      loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
+      loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader'],
+      cache: true
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './index.html'
+      template: path.resolve(__dirname, 'index.html')
     }),
     new webpack.optimize.UglifyJsPlugin({
       mangle: true,
@@ -69,7 +75,7 @@ module.exports = {
     new WebpackMd5Hash(),
   ],
   devServer: {
-    contentBase: './build',
+    contentBase: path.resolve(__dirname, 'build'),
     hot: true,
     historyApiFallback: true,
     inline: true,
