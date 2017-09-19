@@ -52,7 +52,8 @@ module.exports = {
       loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      title: 'P-DEMO',
+      favicon: './app/styles/images/favicon.ico',
       template: path.resolve(__dirname, 'index.html')
     }),
     new webpack.optimize.CommonsChunkPlugin({
