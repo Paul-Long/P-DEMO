@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom';
+import {browserHistory, BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom';
 import Bundle from './bundle';
 import '../styles/style.less';
 
@@ -14,7 +14,7 @@ class Routes extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router history={browserHistory}>
         <div className='h-app'>
           <ul className='h-app-header'>
             {menus.map(m => (

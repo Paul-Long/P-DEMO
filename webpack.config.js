@@ -80,6 +80,6 @@ module.exports = {
     historyApiFallback: true,
     inline: true,
     port: 9090,
-    openPage: 'home'
+    openPage: 'HOME'
   }
 };
