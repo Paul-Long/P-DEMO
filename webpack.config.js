@@ -39,6 +39,7 @@ module.exports = {
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractTextPlugin('[name].[contenthash:8].css', {allChunks: true}),
     new webpack.HotModuleReplacementPlugin(),
     new HappyPack({
@@ -54,7 +55,7 @@ module.exports = {
       cache: true
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      title: 'P-DEMO',
       template: path.resolve(__dirname, 'index.html')
     }),
     new webpack.optimize.UglifyJsPlugin({

@@ -1,5 +1,5 @@
 import React from 'react';
-import {browserHistory, BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom';
+import {browserHistory, BrowserRouter as Router, Link, Redirect, Route, Switch} from 'react-router-dom';
 import Bundle from './bundle';
 import '../styles/style.less';
 
@@ -23,14 +23,16 @@ class Routes extends React.Component {
               </li>))}
           </ul>
           <Redirect from='/' to='HOME' />
-          {menus.map(m => {
-            return (
-              <Route key={m.path}
-                     exact={!!m.exact}
-                     path={`/${m.path}`}
-                     component={(props) => this.renderComponent(props, m.component)}
-              />)
-          })}
+          <Switch>
+            {menus.map(m => {
+              return (
+                <Route key={m.path}
+                       exact={!!m.exact}
+                       path={`/${m.path}`}
+                       component={(props) => this.renderComponent(props, m.component)}
+                />)
+            })}
+          </Switch>
         </div>
       </Router>
     )

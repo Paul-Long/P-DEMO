@@ -39,6 +39,7 @@ module.exports = {
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractTextPlugin('[name].[contenthash:8].css', {allChunks: true}),
     new HappyPack({
       id: 'js',
