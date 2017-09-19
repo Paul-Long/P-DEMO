@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const os = require('os');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HappyPack = require('happypack');
 const WebpackMd5Hash = require('webpack-md5-hash');
@@ -56,6 +55,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'P-DEMO',
+      favicon: './app/styles/images/favicon.ico',
       template: path.resolve(__dirname, 'index.html')
     }),
     new webpack.optimize.UglifyJsPlugin({
